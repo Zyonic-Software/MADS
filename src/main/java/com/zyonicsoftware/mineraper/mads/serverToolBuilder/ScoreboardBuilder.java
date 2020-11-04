@@ -7,7 +7,7 @@
  * tobiasrempe@zyonicsoftware.com
  */
 
-package com.zyonicsoftware.mineraper.mads.serverTools;
+package com.zyonicsoftware.mineraper.mads.serverToolBuilder;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -29,7 +29,7 @@ public class ScoreboardBuilder {
 
     public ScoreboardBuilder(final Plugin plugin, final String title) {
         this.scoreboard = plugin.getServer().getScoreboardManager().getNewScoreboard();
-        this.objective = this.scoreboard.registerNewObjective(plugin.getName() + "-MADS-Scoreboard", "criteria", title);
+        this.objective = this.scoreboard.registerNewObjective(plugin.getName() + "-MADS", "criteria", title);
     }
 
     public ScoreboardBuilder(final Scoreboard scoreboard, final Objective objective) {
@@ -55,7 +55,7 @@ public class ScoreboardBuilder {
     }
 
     public ScoreboardBuilder registerNewVariableLine(final String variableName, final String variableHeader, final String content, final int position) {
-        final Team team = this.scoreboard.registerNewTeam("§" + variableName);
+        final Team team = this.scoreboard.registerNewTeam(variableName);
         this.objective.getScore("§" + this.numberOfVariables + variableHeader + " §7").setScore(position);
         team.addEntry("§" + this.numberOfVariables + variableHeader + " §7");
         team.setSuffix(content);
@@ -64,7 +64,19 @@ public class ScoreboardBuilder {
     }
 
     public ScoreboardBuilder updateVariableLine(final String variableName, final String updatedContent) {
-        this.scoreboard.getTeam("§" + variableName).setSuffix(updatedContent);
+        this.scoreboard.getTeam(variableName).setSuffix(updatedContent);
         return this;
+    }
+
+    public Scoreboard build() {
+        return this.objective.getScoreboard();
+    }
+
+    public Scoreboard getRawScoreboard() {
+        return this.scoreboard;
+    }
+
+    public Objective getObjective() {
+        return this.objective;
     }
 }
