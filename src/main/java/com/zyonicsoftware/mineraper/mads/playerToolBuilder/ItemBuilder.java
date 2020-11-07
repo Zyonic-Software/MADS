@@ -89,4 +89,8 @@ public class ItemBuilder {
         this.itemStack.setItemMeta(itemMeta);
         return this;
     }
+
+    public ItemStack build() {
+        return this.itemStack;
+    }
 }
