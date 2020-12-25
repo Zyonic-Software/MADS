@@ -45,20 +45,6 @@ public abstract class InventoryGUI {
     private final Listener listener;
 
     /**
-     * @return The {@link JavaPlugin} used for initialising the internal listener
-     */
-    public JavaPlugin getJavaPlugin() {
-        return this.javaPlugin;
-    }
-
-    /**
-     * @return The {@link Player} viewing this {@link InventoryGUI}
-     */
-    public Player getPlayer() {
-        return this.player;
-    }
-
-    /**
      * @param javaPlugin The {@link JavaPlugin} used for initialising the internal listener
      * @param player     The {@link Player} viewing this {@link InventoryGUI}
      * @param inventory  The {@link Inventory} used for this gui
@@ -211,4 +197,18 @@ public abstract class InventoryGUI {
      * @param inventoryGUICloseEvent The {@link InventoryGUICloseEvent} to be handled
      */
     protected abstract void onInventoryClose(InventoryGUICloseEvent inventoryGUICloseEvent);
+
+    /**
+     * @return The {@link JavaPlugin} used for initialising the internal listener
+     */
+    public JavaPlugin getJavaPlugin() {
+        return this.javaPlugin;
+    }
+
+    /**
+     * @return The {@link Player} viewing this {@link InventoryGUI}
+     */
+    public Player getPlayer() {
+        return this.player;
+    }
 }
