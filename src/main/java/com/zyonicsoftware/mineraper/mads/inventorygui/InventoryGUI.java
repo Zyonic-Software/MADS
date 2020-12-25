@@ -38,11 +38,12 @@ public abstract class InventoryGUI {
      * All {@link ItemStack}s used in this gui
      */
     private final List<ItemStack> itemStacks;
-
     /**
      * The internal {@link Listener}
      */
     private final Listener listener;
+    private VerticalAlignment verticalAlignment;
+    private HorizontalAlignment horizontalAlignment;
 
     /**
      * @param javaPlugin The {@link JavaPlugin} used for initialising the internal listener
@@ -55,6 +56,8 @@ public abstract class InventoryGUI {
         this.inventory = inventory;
 
         this.itemStacks = new ArrayList<>();
+        this.verticalAlignment = VerticalAlignment.TOP;
+        this.horizontalAlignment = HorizontalAlignment.LEFT;
 
         this.listener = new Listener() {
             @EventHandler
@@ -88,32 +91,33 @@ public abstract class InventoryGUI {
     }
 
     /**
-     * Open the {@link InventoryGUI} for the {@link Player} and update the display
-     *
-     * @see InventoryGUI#updateDisplay()
+     * @return The {@link JavaPlugin} used for initialising the internal listener
      */
-    private void open() {
-        this.player.openInventory(this.inventory);
-
-        this.updateDisplay();
+    public JavaPlugin getJavaPlugin() {
+        return this.javaPlugin;
     }
 
     /**
-     * Clear the display and rerender it
-     *
-     * @see InventoryGUI#clearDisplay()
+     * @return The {@link Player} viewing this {@link InventoryGUI}
      */
-    private void updateDisplay() {
-        this.clearDisplay();
-
-        this.itemStacks.forEach(this.inventory::addItem);
+    public Player getPlayer() {
+        return this.player;
     }
 
-    /**
-     * Clear the display
-     */
-    private void clearDisplay() {
-        this.inventory.clear();
+    public VerticalAlignment getVerticalAlignment() {
+        return this.verticalAlignment;
+    }
+
+    public void setVerticalAlignment(final VerticalAlignment verticalAlignment) {
+        this.verticalAlignment = verticalAlignment;
+    }
+
+    public HorizontalAlignment getHorizontalAlignment() {
+        return this.horizontalAlignment;
+    }
+
+    public void setHorizontalAlignment(final HorizontalAlignment horizontalAlignment) {
+        this.horizontalAlignment = horizontalAlignment;
     }
 
     /**
@@ -164,6 +168,35 @@ public abstract class InventoryGUI {
     }
 
     /**
+     * Open the {@link InventoryGUI} for the {@link Player} and update the display
+     *
+     * @see InventoryGUI#updateDisplay()
+     */
+    private void open() {
+        this.player.openInventory(this.inventory);
+
+        this.updateDisplay();
+    }
+
+    /**
+     * Clear the display and rerender it
+     *
+     * @see InventoryGUI#clearDisplay()
+     */
+    private void updateDisplay() {
+        this.clearDisplay();
+
+        this.itemStacks.forEach(this.inventory::addItem);
+    }
+
+    /**
+     * Clear the display
+     */
+    private void clearDisplay() {
+        this.inventory.clear();
+    }
+
+    /**
      * Register the internal {@link Listener}
      */
     private void registerEvents() {
@@ -198,17 +231,4 @@ public abstract class InventoryGUI {
      */
     protected abstract void onInventoryClose(InventoryGUICloseEvent inventoryGUICloseEvent);
 
-    /**
-     * @return The {@link JavaPlugin} used for initialising the internal listener
-     */
-    public JavaPlugin getJavaPlugin() {
-        return this.javaPlugin;
-    }
-
-    /**
-     * @return The {@link Player} viewing this {@link InventoryGUI}
-     */
-    public Player getPlayer() {
-        return this.player;
-    }
 }
