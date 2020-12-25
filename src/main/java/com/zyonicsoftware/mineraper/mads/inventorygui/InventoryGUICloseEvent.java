@@ -3,6 +3,9 @@ package com.zyonicsoftware.mineraper.mads.inventorygui;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
+/**
+ * A wrapper for an {@link InventoryCloseEvent}
+ */
 public class InventoryGUICloseEvent extends InventoryCloseEvent implements Cancellable {
 
     /**

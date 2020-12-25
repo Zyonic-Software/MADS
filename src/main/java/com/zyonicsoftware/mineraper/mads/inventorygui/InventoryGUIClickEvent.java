@@ -2,6 +2,9 @@ package com.zyonicsoftware.mineraper.mads.inventorygui;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+/**
+ * A wrapper for an {@link InventoryClickEvent}
+ */
 public class InventoryGUIClickEvent extends InventoryClickEvent {
 
     /**
