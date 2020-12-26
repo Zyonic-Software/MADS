@@ -21,10 +21,12 @@ dependencies {
     compile project(":api")
 }
 
-task copyJar(type: Copy) {
+task copyJar(type: Copy, dependsOn: [jar]) {
     from jar
     into "${buildDir}/../../test-server/plugins"
 }
+
+build.finalizedBy(copyJar) // no idea why it gets underlined red, it works never the less
 
 jar {
     from {
