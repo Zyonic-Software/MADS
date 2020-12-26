@@ -1,0 +1,94 @@
+# This is the main configuration file for Purpur.
+# As you can see, there's tons to configure. Some options may impact gameplay, so use
+# with caution, and make sure you know what each option does before configuring.
+# 
+# If you need help with the configuration or have any questions related to Purpur,
+# join us in our Discord guild.
+# 
+# Website: https://github.com/pl3xgaming/Purpur 
+# Wiki: https://github.com/pl3xgaming/Purpur/wiki 
+
+verbose: false
+config-version: 10
+settings:
+  lagging-threshold: 19.0
+  dont-send-useless-entity-packets: false
+  use-alternate-keepalive: false
+  blocks:
+    barrel:
+      six-rows: false
+    ender_chest:
+      six-rows: false
+      use-permissions-for-rows: false
+  logger:
+    hex-color-support-in-console: true
+  enchantment:
+    allow-infinity-and-mending-together: false
+world-settings:
+  default:
+    mobs:
+      villager:
+        brain-ticks: 1
+        use-brain-ticks-only-when-lagging: true
+        can-be-leashed: false
+      cow:
+        feed-mushrooms-for-mooshroom: 0
+      squid:
+        immune-to-EAR: true
+        water-offset-check: 0.0
+      dolphin:
+        disable-treasure-searching: false
+      wandering_trader:
+        can-be-leashed: false
+      snow_golem:
+        drop-pumpkin-when-sheared: false
+        pumpkin-can-be-added-back: false
+    blocks:
+      no-tick: []
+      bamboo:
+        max-height: 16
+        small-height: 10
+      sign:
+        allow-colors: false
+        right-click-edit: false
+      anvil:
+        allow-colors: false
+      farmland:
+        gets-moist-from-below: false
+      lava:
+        infinite-source: false
+        infinite-required-sources: 2
+        speed:
+          nether: 10
+          not-nether: 30
+      turtle_egg:
+        break-from-exp-orbs: true
+        break-from-items: true
+        break-from-minecarts: true
+      weeping_vines:
+        growth-modifier: 0.1
+      twisting_vines:
+        growth-modifier: 0.1
+    gameplay-mechanics:
+      entity-lifespan: 0
+      milk-cures-bad-omen: true
+      persistent-tileentity-display-names-and-lore: false
+      infinity-bow:
+        normal-arrows: true
+        spectral-arrows: false
+        tipped-arrows: false
+        no-arrows: false
+      projectile-despawn-rates:
+        dragon_fireball: -1
+        egg: -1
+        ender_pearl: -1
+        experience_bottle: -1
+        firework_rocket: -1
+        fishing_bobber: -1
+        fireball: -1
+        llama_spit: -1
+        potion: -1
+        shulker_bullet: -1
+        small_fireball: -1
+        snowball: -1
+        wither_skull: -1

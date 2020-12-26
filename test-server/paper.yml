@@ -78,6 +78,7 @@ messages:
     flying-vehicle: Flying is not enabled on this server
 world-settings:
   default:
+    projectile-load-save-per-chunk-limit: -1
     grass-spread-tick-rate: 1
     seed-based-feature-search: true
     water-over-lava-flow-speed: 5
