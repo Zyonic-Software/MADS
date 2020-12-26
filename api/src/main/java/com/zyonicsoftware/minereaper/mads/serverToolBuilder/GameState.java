@@ -7,7 +7,7 @@
  * tobiasrempe@zyonicsoftware.com
  */
 
-package com.zyonicsoftware.mineraper.mads.serverToolBuilder;
+package com.zyonicsoftware.minereaper.mads.serverToolBuilder;
 
 public enum GameState {
     LOBBY,

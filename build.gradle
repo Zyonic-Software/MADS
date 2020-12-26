@@ -10,18 +10,20 @@
 plugins {
     id 'java'
 }
+subprojects {
+    group 'com.zyonicsoftware'
+    version '1.0.0'
 
-group 'com.zyonicsoftware'
-version '1.0-SNAPSHOT'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-    maven {
-        name = 'papermc-repo'
-        url = 'https://papermc.io/repo/repository/maven-public/'
+    configurations {
+        jar.archiveName = rootProject.name + '-' + project.name + '.jar'
     }
-}
 
-dependencies {
-    compileOnly 'com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT'
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+
 }

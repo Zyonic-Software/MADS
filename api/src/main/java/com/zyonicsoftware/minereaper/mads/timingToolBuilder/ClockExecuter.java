@@ -7,7 +7,7 @@
  * tobiasrempe@zyonicsoftware.com
  */
 
-package com.zyonicsoftware.mineraper.mads.timingToolBuilder;
+package com.zyonicsoftware.minereaper.mads.timingToolBuilder;
 
 public interface ClockExecuter {
 

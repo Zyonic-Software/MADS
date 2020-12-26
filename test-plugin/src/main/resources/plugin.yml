@@ -1,0 +1,4 @@
+name: MADS
+version: @version@
+main: com.zyonicsoftware.minereaper.mads.MADS
+api-version: 1.16

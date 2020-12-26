@@ -7,7 +7,7 @@
  * tobiasrempe@zyonicsoftware.com
  */
 
-package com.zyonicsoftware.mineraper.mads.playerToolBuilder;
+package com.zyonicsoftware.minereaper.mads.playerToolBuilder;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

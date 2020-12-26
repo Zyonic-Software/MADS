@@ -7,7 +7,7 @@
  * tobiasrempe@zyonicsoftware.com
  */
 
-package com.zyonicsoftware.mineraper.mads.serverToolBuilder;
+package com.zyonicsoftware.minereaper.mads.serverToolBuilder;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
