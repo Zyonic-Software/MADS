@@ -1,4 +1,4 @@
-package com.zyonicsoftware.mineraper.mads.inventorygui;
+package com.zyonicsoftware.minereaper.mads.inventorygui;
 
 public enum HorizontalAlignment {
     LEFT,

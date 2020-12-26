@@ -1,5 +1,6 @@
-package com.zyonicsoftware.mineraper.mads.inventorygui;
+package com.zyonicsoftware.minereaper.mads.inventorygui;
 
+import com.zyonicsoftware.minereaper.mads.util.MathUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -172,10 +173,18 @@ public abstract class InventoryGUI {
      *
      * @see InventoryGUI#updateDisplay()
      */
-    private void open() {
+    public void open() {
+        this.player.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
         this.player.openInventory(this.inventory);
 
         this.updateDisplay();
+    }
+
+    /**
+     * Close the {@link InventoryGUI} for the {@link Player}
+     */
+    public void close() {
+        this.player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
     }
 
     /**
@@ -186,7 +195,50 @@ public abstract class InventoryGUI {
     private void updateDisplay() {
         this.clearDisplay();
 
+        int row = -1;
+        switch (this.verticalAlignment) {
+            case TOP:
+                row = 0;
+                break;
+            case MIDDLE:
+                final int itemStackMaxRows = (int) Math.ceil(this.itemStacks.size() / 9f);
+                if (MathUtil.isEven(itemStackMaxRows)) {
+                    row = (this.getMaxRows() / 2 + 1 - itemStackMaxRows / 2) - 1;
+                } else {
+                    row = (int) ((int) Math.ceil(this.getMaxRows() / 2d) - Math.floor(itemStackMaxRows / 2d) - 1);
+                }
+                break;
+            case BOTTOM:
+                row = this.getMaxRows() - 1;
+                break;
+        }
+        int column = 0;
+        for (final ItemStack itemStack : this.itemStacks) {
+            this.setItem(row, column, itemStack);
+            if (this.verticalAlignment.equals(VerticalAlignment.TOP) || this.verticalAlignment.equals(VerticalAlignment.MIDDLE)) {
+                column++;
+                if (column == 9) {
+                    column = 0;
+                    row++;
+                }
+            } else if (this.verticalAlignment.equals(VerticalAlignment.BOTTOM)) {
+                column++;
+                if (column == 9) {
+                    column = 0;
+                    row--;
+                }
+            }
+        }
+
         this.itemStacks.forEach(this.inventory::addItem);
+    }
+
+    private int getMaxRows() {
+        return this.inventory.getSize() / 9;
+    }
+
+    private void setItem(final int row, final int column, final ItemStack itemStack) {
+        this.inventory.setItem(9 * row + column, itemStack);
     }
 
     /**
