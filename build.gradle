@@ -17,13 +17,7 @@ subprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
-    configurations {
-        jar.archiveName = rootProject.name + '-' + project.name + '.jar'
-    }
-
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
-
-
 }

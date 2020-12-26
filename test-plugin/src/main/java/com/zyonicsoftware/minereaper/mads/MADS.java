@@ -17,6 +17,12 @@ public class MADS extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
+
+        System.out.println("hiadad");
+        System.out.println("hiadad");
+        System.out.println("hiadad");
+        System.out.println("hiadad");
+        System.out.println("hiadad");
     }
 
     @EventHandler
