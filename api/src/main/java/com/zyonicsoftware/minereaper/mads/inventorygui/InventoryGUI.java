@@ -22,6 +22,7 @@ import java.util.List;
  */
 public abstract class InventoryGUI {
 
+//    private static final String INVENTORY_GUI_CLOSING_META_DATA_KEY = "inventoryGUIClosing";
     /**
      * The {@link JavaPlugin} used for initialising the internal listener
      */
@@ -34,7 +35,6 @@ public abstract class InventoryGUI {
      * The {@link Inventory} used for this gui
      */
     private final Inventory inventory;
-
     /**
      * All {@link ItemStack}s used in this gui
      */
@@ -43,8 +43,9 @@ public abstract class InventoryGUI {
      * The internal {@link Listener}
      */
     private final Listener listener;
-    private VerticalAlignment verticalAlignment;
-    private HorizontalAlignment horizontalAlignment;
+    private InventoryGUIAlignment verticalAlignment;
+    private InventoryGUIAlignment horizontalAlignment;
+    private ItemStack backgroundItemStack;
 
     /**
      * @param javaPlugin The {@link JavaPlugin} used for initialising the internal listener
@@ -57,8 +58,8 @@ public abstract class InventoryGUI {
         this.inventory = inventory;
 
         this.itemStacks = new ArrayList<>();
-        this.verticalAlignment = VerticalAlignment.TOP;
-        this.horizontalAlignment = HorizontalAlignment.LEFT;
+        this.verticalAlignment = InventoryGUIAlignment.TOP;
+        this.horizontalAlignment = InventoryGUIAlignment.LEFT;
 
         this.listener = new Listener() {
             @EventHandler
@@ -77,14 +78,21 @@ public abstract class InventoryGUI {
 
             @EventHandler
             public void onInventoryClose(final InventoryCloseEvent inventoryCloseEvent) {
+//                System.out.println("inventoryCloseEvent: " + inventoryCloseEvent.getViewers());
+//                System.out.println("inventory: " + inventory.getViewers());
                 if (inventoryCloseEvent.getViewers().equals(inventory.getViewers())) {
                     final InventoryGUICloseEvent inventoryGUICloseEvent = new InventoryGUICloseEvent(inventoryCloseEvent);
                     InventoryGUI.this.onInventoryClose(inventoryGUICloseEvent);
+//                    System.out.println(inventoryCloseEvent.getPlayer().hasMetadata(InventoryGUI.INVENTORY_GUI_CLOSING_META_DATA_KEY));
+                    /*if (inventoryCloseEvent.getPlayer().hasMetadata(InventoryGUI.INVENTORY_GUI_CLOSING_META_DATA_KEY)) {
+                        inventoryCloseEvent.getPlayer().removeMetadata(InventoryGUI.INVENTORY_GUI_CLOSING_META_DATA_KEY, javaPlugin);
+                    } else {*/
                     if (inventoryGUICloseEvent.isCancelled()) {
                         InventoryGUI.this.open();
                     } else {
                         InventoryGUI.this.unregisterEvents();
                     }
+//                    }
                 }
             }
         };
@@ -105,20 +113,34 @@ public abstract class InventoryGUI {
         return this.player;
     }
 
-    public VerticalAlignment getVerticalAlignment() {
+    public InventoryGUIAlignment getVerticalAlignment() {
         return this.verticalAlignment;
     }
 
-    public void setVerticalAlignment(final VerticalAlignment verticalAlignment) {
-        this.verticalAlignment = verticalAlignment;
+    public void setVerticalAlignment(final InventoryGUIAlignment inventoryGUIAlignment) {
+        this.verticalAlignment = inventoryGUIAlignment;
+
+        this.updateDisplay();
     }
 
-    public HorizontalAlignment getHorizontalAlignment() {
+    public InventoryGUIAlignment getHorizontalAlignment() {
         return this.horizontalAlignment;
     }
 
-    public void setHorizontalAlignment(final HorizontalAlignment horizontalAlignment) {
-        this.horizontalAlignment = horizontalAlignment;
+    public void setHorizontalAlignment(final InventoryGUIAlignment inventoryGUIAlignment) {
+        this.horizontalAlignment = inventoryGUIAlignment;
+
+        this.updateDisplay();
+    }
+
+    public ItemStack getBackgroundItemStack() {
+        return this.backgroundItemStack;
+    }
+
+    public void setBackgroundItemStack(final ItemStack backgroundItemStack) {
+        this.backgroundItemStack = backgroundItemStack;
+
+        this.updateDisplay();
     }
 
     /**
@@ -174,7 +196,7 @@ public abstract class InventoryGUI {
      * @see InventoryGUI#updateDisplay()
      */
     public void open() {
-        this.player.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
+        this.close();
         this.player.openInventory(this.inventory);
 
         this.updateDisplay();
@@ -184,6 +206,7 @@ public abstract class InventoryGUI {
      * Close the {@link InventoryGUI} for the {@link Player}
      */
     public void close() {
+//        this.player.setMetadata(InventoryGUI.INVENTORY_GUI_CLOSING_META_DATA_KEY, new FixedMetadataValue(this.javaPlugin, true));
         this.player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
     }
 
@@ -195,42 +218,56 @@ public abstract class InventoryGUI {
     private void updateDisplay() {
         this.clearDisplay();
 
-        int row = -1;
-        switch (this.verticalAlignment) {
-            case TOP:
-                row = 0;
-                break;
-            case MIDDLE:
-                final int itemStackMaxRows = (int) Math.ceil(this.itemStacks.size() / 9f);
-                if (MathUtil.isEven(itemStackMaxRows)) {
-                    row = (this.getMaxRows() / 2 + 1 - itemStackMaxRows / 2) - 1;
-                } else {
-                    row = (int) ((int) Math.ceil(this.getMaxRows() / 2d) - Math.floor(itemStackMaxRows / 2d) - 1);
-                }
-                break;
-            case BOTTOM:
-                row = this.getMaxRows() - 1;
-                break;
-        }
-        int column = 0;
+        int row = this.getOriginSlot(this.verticalAlignment);
+        int column = this.getOriginSlot(this.horizontalAlignment);
+
         for (final ItemStack itemStack : this.itemStacks) {
             this.setItem(row, column, itemStack);
-            if (this.verticalAlignment.equals(VerticalAlignment.TOP) || this.verticalAlignment.equals(VerticalAlignment.MIDDLE)) {
-                column++;
-                if (column == 9) {
-                    column = 0;
-                    row++;
-                }
-            } else if (this.verticalAlignment.equals(VerticalAlignment.BOTTOM)) {
-                column++;
-                if (column == 9) {
-                    column = 0;
-                    row--;
-                }
+            column += this.horizontalAlignment.equals(InventoryGUIAlignment.RIGHT) ? -1 : 1;
+            if (column == (this.horizontalAlignment.equals(InventoryGUIAlignment.RIGHT) ? 0 - 1 : this.getMaxColumns())) {
+                column = this.horizontalAlignment.equals(InventoryGUIAlignment.RIGHT) ? this.getMaxColumns() - 1 : 0;
+                row += this.verticalAlignment.equals(InventoryGUIAlignment.BOTTOM) ? -1 : 1;
             }
         }
 
-        this.itemStacks.forEach(this.inventory::addItem);
+        if (this.backgroundItemStack != null) {
+            final ItemStack[] contents = this.inventory.getContents();
+            for (int i = 0; i < contents.length; i++) {
+                if (contents[i] == null) {
+                    this.inventory.setItem(i, this.backgroundItemStack);
+                }
+            }
+        }
+    }
+
+    private int getOriginSlot(final InventoryGUIAlignment inventoryGUIAlignment) {
+        final int itemStackMaxRows = (int) Math.ceil(this.itemStacks.size() / 9f);
+        switch (inventoryGUIAlignment) {
+            case TOP:
+            case LEFT:
+                return 0;
+            case VERTICAL_MIDDLE:
+                if (MathUtil.isEven(itemStackMaxRows)) {
+                    return (this.getMaxRows() / 2 + 1 - itemStackMaxRows / 2) - 1;
+                } else {
+                    return (int) ((int) Math.ceil(this.getMaxRows() / 2d) - Math.floor(itemStackMaxRows / 2d) - 1);
+                }
+            case HORIZONTAL_MIDDLE:
+                if (MathUtil.isEven(itemStackMaxRows)) {
+                    return (this.getMaxColumns() / 2 + 1 - itemStackMaxRows / 2) - 1;
+                } else {
+                    return (int) ((int) Math.ceil(this.getMaxColumns() / 2d) - Math.floor(itemStackMaxRows / 2d) - 1);
+                }
+            case BOTTOM:
+                return this.getMaxRows() - 1;
+            case RIGHT:
+                return this.getMaxColumns() - 1;
+        }
+        return -1;
+    }
+
+    private int getMaxColumns() {
+        return 9;
     }
 
     private int getMaxRows() {

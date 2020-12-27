@@ -25,6 +25,8 @@ public class InventoryGUICloseEvent extends InventoryCloseEvent implements Cance
 
     /**
      * {@inheritDoc}
+     *
+     * @deprecated
      */
     @Override
     public boolean isCancelled() {
@@ -33,6 +35,8 @@ public class InventoryGUICloseEvent extends InventoryCloseEvent implements Cance
 
     /**
      * {@inheritDoc}
+     *
+     * @deprecated
      */
     @Override
     public void setCancelled(final boolean cancel) {

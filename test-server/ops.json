@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "uuid": "fc57116d-57e1-438f-a49a-20da1497ab7d",
+    "name": "Daschi1",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  }
+]

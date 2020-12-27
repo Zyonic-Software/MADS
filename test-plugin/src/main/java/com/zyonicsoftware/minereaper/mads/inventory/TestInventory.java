@@ -28,6 +28,6 @@ public class TestInventory extends InventoryGUI {
 
     @Override
     protected void onInventoryClose(final InventoryGUICloseEvent inventoryGUICloseEvent) {
-
+//        inventoryGUICloseEvent.setCancelled(true);
     }
 }
